@@ -1,18 +1,37 @@
 <div class="container">
-  <h1 class="text-center">chat</h1>
-  <hr>
-  <div class="app-message" #asd>
-    <div class="text-right" *ngFor="let chat of chats">
-      <span class="badge badge-primary">asdsa</span>
-      <p>
-        {{chat.message}}
-      </p>
-    </div>
 
+  <div class="chat-window " *ngIf="user">
+    <h1 class="text-center">chat</h1>
+    <hr>
+    <div class="app-message" #chat>
+      <div *ngFor="let chat of chats" [ngClass]="{ 'text-right': user == chat.uid }">
+        <span class="badge" [ngClass]="{ 'badge-success': user == chat.uid,
+                     'badge-primary': user != chat.uid }">
+          {{chat.name}}</span>
+        <p>
+          {{chat.message}}
+        </p>
+      </div>
+    </div>
+    <input type="text" name="message" [(ngModel)]="message" class="form-control mt-1" (keyup.enter)="send()"
+      placeholder="Send Message">
   </div>
-  <input type="text" name="message" 
-         [(ngModel)]="message" 
-         class="form-control mt-1" 
-         (keyup.enter)="send()"
-        placeholder="Send Message">
+
+  <div class="row" *ngIf="!user">
+    <div class="col-md-12 text-center">
+      <h3 class="mb-3">Ingrese</h3>
+      <button class="btn btn-danger" (click)="login('google')">
+        Google
+      </button>
+      <button class="btn btn-primary" (click)="login('twitter')">
+        Twitter
+      </button>
+    </div>
+  </div>
+  
+  <div class="text-center mt-5">
+    <button class="btn btn-warning" (click)="logout()">
+      logout
+    </button>
+  </div>
 </div>
